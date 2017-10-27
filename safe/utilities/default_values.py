@@ -4,6 +4,7 @@
 
 from safe.definitions import GLOBAL, zero_default_value
 from safe.definitions.utilities import definition
+from safe.utilities.settings import set_setting, setting
 
 __copyright__ = "Copyright 2016, The InaSAFE Project"
 __license__ = "GPL version 3"
@@ -29,8 +30,8 @@ def set_inasafe_default_value_qsetting(
     :param value: Value of the inasafe_default_value.
     :type value: float, int
     """
-    key = 'inasafe/default_value/%s/%s' % (category, inasafe_field_key)
-    qsetting.setValue(key, value)
+    key = 'default_value/%s/%s' % (category, inasafe_field_key)
+    set_setting(key, value, qsettings=qsetting)
 
 
 def get_inasafe_default_value_qsetting(
@@ -51,8 +52,9 @@ def get_inasafe_default_value_qsetting(
     :returns: Value of the inasafe_default_value.
     :rtype: float
     """
-    key = 'inasafe/default_value/%s/%s' % (category, inasafe_field_key)
-    default_value = qsetting.value(key)
+    key = 'default_value/%s/%s' % (category, inasafe_field_key)
+    # default_value = qsetting.value(key)
+    default_value = setting(key, qsettings=qsetting)
     if default_value is None:
         if category == GLOBAL:
             # If empty for global setting, use default one.
@@ -62,6 +64,7 @@ def get_inasafe_default_value_qsetting(
 
         return zero_default_value
     try:
+        # noinspection PyTypeChecker
         return float(default_value)
     except ValueError:
         return zero_default_value

@@ -40,6 +40,7 @@ from safe.gui.tools.wizard.wizard_strings import (
     create_postGIS_connection_first)
 from safe.utilities.gis import qgis_version
 from safe.utilities.utilities import is_keyword_version_supported
+from safe.utilities.settings import general_setting
 
 __copyright__ = "Copyright 2016, The InaSAFE Project"
 __license__ = "GPL version 3"
@@ -97,31 +98,30 @@ class WizardStepBrowser(WizardStep):
         schema = path.split('/')[2]
         table_name = path.split('/')[3]
 
-        settings = QSettings()
         key = "/PostgreSQL/connections/" + connection_name
-        service = settings.value(key + "/service")
-        host = settings.value(key + "/host")
-        port = settings.value(key + "/port")
+        service = general_setting(key + "/service")
+        host = general_setting(key + "/host")
+        port = general_setting(key + "/port")
         if not port:
             port = "5432"
-        db = settings.value(key + "/database")
-        use_estimated_metadata = settings.value(
-            key + "/estimatedMetadata", False, type=bool)
-        sslmode = settings.value(
-            key + "/sslmode", QgsDataSourceURI.SSLprefer, type=int)
+        db = general_setting(key + "/database")
+        use_estimated_metadata = general_setting(
+            key + "/estimatedMetadata", False, expected_type=bool)
+        sslmode = general_setting(
+            key + "/sslmode", QgsDataSourceURI.SSLprefer, expected_type=int)
         username = ""
         password = ""
-        if settings.value(key + "/saveUsername") == "true":
-            username = settings.value(key + "/username")
+        if general_setting(key + "/saveUsername") == "true":
+            username = general_setting(key + "/username")
 
-        if settings.value(key + "/savePassword") == "true":
-            password = settings.value(key + "/password")
+        if general_setting(key + "/savePassword") == "true":
+            password = general_setting(key + "/password")
 
         # Old save setting
-        if settings.contains(key + "/save"):
-            username = settings.value(key + "/username")
-            if settings.value(key + "/save") == "true":
-                password = settings.value(key + "/password")
+        if QSettings().contains(key + "/save"):
+            username = general_setting(key + "/username")
+            if general_setting(key + "/save") == "true":
+                password = general_setting(key + "/password")
 
         uri = QgsDataSourceURI()
         if service:
