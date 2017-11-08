@@ -2,17 +2,19 @@
 
 import unittest
 
-from qgis.core import QgsMapLayerRegistry
 from safe.test.utilities import (
     load_test_vector_layer,
     get_qgis_app)
+QGIS_APP, CANVAS, IFACE, PARENT = get_qgis_app()
+
+from qgis.core import QgsMapLayerRegistry
+from qgis.gui import QgsMapCanvasLayer
+
 from PyQt4.QtGui import QDialogButtonBox
 
 from safe.definitions.exposure import exposure_road, exposure_population
 from safe.gui.tools.multi_exposure_dialog import (
     MultiExposureDialog)
-
-QGIS_APP, CANVAS, IFACE, PARENT = get_qgis_app()
 
 __copyright__ = "Copyright 2017, The InaSAFE Project"
 __license__ = "GPL version 3"
@@ -33,8 +35,18 @@ class MultiExposureDialogTest(unittest.TestCase):
         aggregation_layer = load_test_vector_layer(
             'gisv4', 'aggregation', 'small_grid.geojson')
 
-        QgsMapLayerRegistry.instance().addMapLayers(
-            [hazard_layer, population_layer, roads_layer, aggregation_layer])
+        test_layers = [
+            hazard_layer, population_layer, roads_layer, aggregation_layer]
+
+        QgsMapLayerRegistry.instance().addMapLayers(test_layers)
+
+        # Need to set the layers manually to map canvas. See:
+        # https://gist.github.com/ismailsunni/dd2c30a38cef0147bd0dc8d6ba1aeac6
+        qgs_map_canvas_layers = [QgsMapCanvasLayer(x) for x in test_layers]
+        CANVAS.setLayerSet(qgs_map_canvas_layers)
+
+        # Making sure that there is 4 layers in the canvas.
+        self.assertEqual(4, len(IFACE.mapCanvas().layers()))
 
         dialog = MultiExposureDialog(PARENT, IFACE)
         self.assertFalse(
