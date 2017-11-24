@@ -171,42 +171,45 @@
       </gmd:extent>
       <gmd:supplementalInformation>
         <inasafe>
-          <classification>
-            <gco:CharacterString>generic_landcover_classes</gco:CharacterString>
-          </classification>
           <scale>
             <gco:CharacterString/>
           </scale>
+          <layer_mode>
+            <gco:CharacterString>classified</gco:CharacterString>
+          </layer_mode>
           <exposure_unit>
             <gco:CharacterString/>
           </exposure_unit>
+          <classification>
+            <gco:CharacterString>generic_landcover_classes</gco:CharacterString>
+          </classification>
           <keyword_version>
-            <gco:CharacterString>4.1</gco:CharacterString>
+            <gco:CharacterString>4.3</gco:CharacterString>
           </keyword_version>
           <source>
             <gco:CharacterString>My data</gco:CharacterString>
           </source>
-          <value_map>
-            <gco:Dictionary>{&quot;farm&quot;: [&quot;Meadow&quot;], &quot;residential&quot;: [&quot;Population&quot;], &quot;wood&quot;: [&quot;Forest&quot;, &quot;Water&quot;]}</gco:Dictionary>
-          </value_map>
-          <inasafe_fields>
-            <gco:Dictionary>{&quot;exposure_id_field&quot;: &quot;id&quot;, &quot;production_value_rate_field&quot;: &quot;productivity_value_rate&quot;, &quot;productivity_rate_field&quot;: &quot;productivity_rate&quot;, &quot;exposure_type_field&quot;: &quot;FCODE&quot;, &quot;production_cost_rate_field&quot;: &quot;productivity_cost_rate&quot;}</gco:Dictionary>
-          </inasafe_fields>
           <layer_geometry>
             <gco:CharacterString>polygon</gco:CharacterString>
           </layer_geometry>
-          <layer_purpose>
-            <gco:CharacterString>exposure</gco:CharacterString>
-          </layer_purpose>
-          <inasafe_default_values>
-            <gco:Dictionary/>
-          </inasafe_default_values>
           <active_band>
             <gco:Integer/>
           </active_band>
-          <layer_mode>
-            <gco:CharacterString>classified</gco:CharacterString>
-          </layer_mode>
+          <value_map>
+            <gco:Dictionary>{&quot;farm&quot;: [&quot;Meadow&quot;], &quot;residential&quot;: [&quot;Population&quot;], &quot;wood&quot;: [&quot;Forest&quot;, &quot;Water&quot;]}</gco:Dictionary>
+          </value_map>
+          <layer_purpose>
+            <gco:CharacterString>exposure</gco:CharacterString>
+          </layer_purpose>
+          <inasafe_fields>
+            <gco:Dictionary>{&quot;exposure_id_field&quot;: &quot;id&quot;, &quot;production_value_rate_field&quot;: &quot;productivity_value_rate&quot;, &quot;productivity_rate_field&quot;: &quot;productivity_rate&quot;, &quot;exposure_type_field&quot;: &quot;FCODE&quot;, &quot;production_cost_rate_field&quot;: &quot;productivity_cost_rate&quot;}</gco:Dictionary>
+          </inasafe_fields>
+          <inasafe_default_values>
+            <gco:Dictionary/>
+          </inasafe_default_values>
+          <extra_keywords>
+            <gco:Dictionary/>
+          </extra_keywords>
           <exposure>
             <gco:CharacterString>land_cover</gco:CharacterString>
           </exposure>
