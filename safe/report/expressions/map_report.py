@@ -2,6 +2,7 @@
 
 """QGIS Expressions which are available in the QGIS GUI interface."""
 
+import os
 from qgis.core import (
     qgsfunction,
     QgsCoordinateReferenceSystem,
@@ -35,6 +36,7 @@ from safe.definitions.reports.map_report import (
     inasafe_north_arrow_path,
     inasafe_organisation_logo_path,
     crs_text)
+from safe.definitions.default_settings import inasafe_default_settings
 from safe.utilities.i18n import tr
 from safe.utilities.utilities import generate_expression_help
 from safe.utilities.settings import setting
@@ -518,7 +520,12 @@ help_message = generate_expression_help(description, examples)
 def north_arrow_path(feature, parent):
     """Retrieve the full path of default north arrow logo."""
     _ = feature, parent  # NOQA
-    return setting(inasafe_north_arrow_path['setting_key'])
+
+    north_arrow_file = setting(inasafe_north_arrow_path['setting_key'])
+    if os.path.exists(north_arrow_file):
+        return north_arrow_file
+    else:
+        return inasafe_default_settings['north_arrow_path']
 
 
 description = tr(
@@ -535,4 +542,9 @@ help_message = generate_expression_help(description, examples)
 def organisation_logo_path(feature, parent):
     """Retrieve the full path of used specified organisation logo."""
     _ = feature, parent  # NOQA
-    return setting(inasafe_organisation_logo_path['setting_key'])
+    organisation_logo_file = setting(
+        inasafe_organisation_logo_path['setting_key'])
+    if os.path.exists(organisation_logo_file):
+        return organisation_logo_file
+    else:
+        return inasafe_default_settings['organisation_logo_path']
