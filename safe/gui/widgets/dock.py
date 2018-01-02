@@ -9,7 +9,7 @@ from datetime import datetime
 from numbers import Number
 
 from PyQt4 import QtGui, QtCore
-from PyQt4.QtCore import Qt, pyqtSlot, QPyNullVariant
+from PyQt4.QtCore import Qt, pyqtSlot, QPyNullVariant, pyqtSignal
 from qgis.core import (
     QgsGeometry,
     QgsMapLayer,
@@ -136,6 +136,8 @@ class Dock(QtGui.QDockWidget, FORM_CLASS):
 
     """Dock implementation class for the inaSAFE plugin."""
 
+    resized = pyqtSignal()
+
     def __init__(self, iface):
         """Constructor for the dialog.
 
@@ -219,6 +221,8 @@ class Dock(QtGui.QDockWidget, FORM_CLASS):
             'will be affected? Summarise the results by selected '
             'features in')
         self.aggregation_question_label.setText(self.label_without_selection)
+
+        self.resized.connect(self.after_resize)
 
     @property
     def aggregation(self):
@@ -443,7 +447,8 @@ class Dock(QtGui.QDockWidget, FORM_CLASS):
         We got a problem by trying to connect/disconnect before every time.
         """
         if not self._aggregation:
-            self.validate_impact_function()
+            # self.validate_impact_function()
+            pass
         else:
             pass
 
@@ -1603,3 +1608,23 @@ class Dock(QtGui.QDockWidget, FORM_CLASS):
         # other variable
         QgsExpressionContextUtils.setProjectVariables(
             non_null_existing_variables)
+
+    # Adapted from https://stackoverflow.com/a/43126946/1198772
+    def resizeEvent(self, event):
+        """Emit custom signal when the window is re-sized.
+
+        :param event: The re-sized event.
+        :type event: QResizeEvent
+        """
+        self.resized.emit()
+        return super(Dock, self).resizeEvent(event)
+
+    def after_resize(self):
+        """Method after resizing the window."""
+        # Reset the max height. 190 is a number that make it pretty
+        LOGGER.debug('Dock is resized')
+        if self.iface.activeLayer() is not None:
+            LOGGER.debug('Active layer %s' % self.iface.activeLayer().name())
+            self.layer_changed(self.iface.activeLayer())
+        else:
+            LOGGER.debug('Active layer is None')
